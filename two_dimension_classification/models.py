@@ -8,13 +8,11 @@ import torch
 
 
 def binary_cross_entropy(y_proba: torch.Tensor, y: torch.Tensor):
-    """二元交叉熵：衡量预测概率与真实二分类标签的差距，返回标量损失。"""
     loss = -torch.mean(y * torch.log(y_proba + 1e-8) + (1 - y) * torch.log(1 - y_proba + 1e-8))
     return loss
 
 
 class LogisticRegression:
-    """逻辑回归：用于线性二分类。"""
 
     def __init__(self, learning_rate=0.1, epochs=1000):
         self.learning_rate = learning_rate
@@ -23,29 +21,37 @@ class LogisticRegression:
         self.b = torch.zeros(1, requires_grad=False)
 
     def forward(self, X: torch.Tensor) -> torch.Tensor:
-        """前向计算：从输入得到 sigmoid 概率，形状为 (N, 1)。"""
         logits = X @ self.W + self.b
         y_proba = torch.sigmoid(logits)
+        self.y_proba = y_proba
         return y_proba
 
     def backward(self, X: torch.Tensor, y: torch.Tensor):
-        
+        dz = (self.y_proba - y) / X.size(0)
+        self.dW = X.T @ dz
+        self.db = dz.sum(dim=0)
 
     def step(self):
-        """根据保存的梯度和学习率，手动更新 W、b。"""
-        raise NotImplementedError("待实现：逻辑回归参数更新")
+        self.W -= self.learning_rate * self.dW
+        self.b -= self.learning_rate * self.db
 
     def fit(self, X: torch.Tensor, y: torch.Tensor):
-        """组织前向计算、损失计算、梯度计算和更新，返回每轮损失列表。"""
-        raise NotImplementedError("待实现：逻辑回归训练")
+        losses = []
+        for epoch in range(self.epochs):
+            self.forward(X)
+            loss = binary_cross_entropy(self.y_proba, y)
+            losses.append(loss.item())
+            self.backward(X, y)
+            self.step()
+        self.loss_list = losses
 
     def predict_proba(self, X: torch.Tensor) -> torch.Tensor:
-        """返回属于类别 1 的概率，形状为 (N, 1)。"""
-        raise NotImplementedError("待实现：逻辑回归概率预测")
+        return self.forward(X)
 
     def judge(self, X: torch.Tensor) -> torch.Tensor:
-        """概率大于等于 0.5 时返回 1，否则返回 0，形状为 (N, 1)。"""
-        raise NotImplementedError("待实现：逻辑回归类别判断")
+        y_proba = self.predict_proba(X)
+        judge_result = (y_proba >= 0.5).float()
+        return judge_result
 
 
 class ManualMLP:

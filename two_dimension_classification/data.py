@@ -1,10 +1,12 @@
 """生成二维二分类的线性和非线性数据，并划分训练集和测试集。"""
 import torch
-torch.manual_seed(26079100049)
+
 
 def two_dimention_linear_data_generate(batch_size: int, seed: int) -> torch.Tensor:
-    x0 = torch.rand(batch_size, 2) + torch.tensor([2.0, 2.0])  
-    x1 = torch.rand(batch_size, 2) + torch.tensor([-2.0, -2.0])
+    torch.manual_seed(seed)
+    std = 1.0  # 标准差：越大，点越分散
+    x0 = torch.randn(batch_size, 2) * std + torch.tensor([2.0, 2.0])
+    x1 = torch.randn(batch_size, 2) * std + torch.tensor([-2.0, -2.0])
     y0 = torch.zeros(batch_size, 1)
     y1 = torch.ones(batch_size, 1)
     data = torch.cat([torch.cat([x0, y0], dim=1),
