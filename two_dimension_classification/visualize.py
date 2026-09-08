@@ -1,4 +1,4 @@
-"""绘制实验结果，并将图片保存到 results/。"""
+"""绘制实验结果，并将图片保存到 results？"""
 import matplotlib.pyplot as plt
 import torch
 

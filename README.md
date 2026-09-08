@@ -1,7 +1,3 @@
 # AI-basics-club-task
-时间就像海绵里的水！@
-deepseek
-gemini
-chatgpt
-hy4
-赐予我力量！
+预计包含极创工作室的人工智能基础 MNIST训练 超分模型部署
+
