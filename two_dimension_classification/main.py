@@ -15,7 +15,7 @@ def run_linear_experiment():
     model = LogisticRegression()
     model.fit(x_train, y_train)
     accuracy = (model.judge(x_test) == y_test).float().mean().item()
-    print(f"测试准确率：{accuracy:.2%}喵")
+    print(f"线性测试准确率：{accuracy:.2%}喵")
     plot_decision_boundary(model, x_test, y_test)
     plot_loss_curve(model.loss_list)
 
@@ -26,7 +26,7 @@ def run_nonlinear_experiment():
     model = ManualMLP()
     model.fit(x_train, y_train)
     accuracy = (model.judge(x_test) == y_test).float().mean().item()
-    print(f"测试准确率：{accuracy:.2%}喵")
+    print(f"非线性测试准确率：{accuracy:.2%}喵")
     plot_decision_boundary(model, x_test, y_test)
     plot_loss_curve(model.loss_list)
 

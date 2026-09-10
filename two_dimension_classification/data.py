@@ -39,7 +39,7 @@ def two_dimention_nonlinear_data_generate(batch_size: int, seed: int) -> torch.T
     
 
 
-def split_data(data: torch.Tensor, test_ratio: float = 0.2):
+def split_data(data: torch.Tensor, test_ratio: float = 0.2) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
     n_test = int(data.size(0) * test_ratio)
     X_test = data[:n_test, :2]
     Y_test = data[:n_test, 2:3]
